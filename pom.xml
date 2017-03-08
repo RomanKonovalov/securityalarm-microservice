@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <groupId>org.springframework.boot</groupId>
+        <version>1.5.1.RELEASE</version>
+        <relativePath />
+    </parent>
+
+
+    <groupId>com.romif.securityalarm</groupId>
+    <artifactId>securityalarm</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+	<name>Securityalarm</name>
+
+    <modules>
+        <module>application</module>
+        <module>gateway</module>
+    </modules>
+
+
+</project>
