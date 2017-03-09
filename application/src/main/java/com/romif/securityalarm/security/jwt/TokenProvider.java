@@ -63,7 +63,7 @@ public class TokenProvider {
         return Jwts.builder()
             .setSubject(authentication.getName())
             .claim(AUTHORITIES_KEY, authorities)
-            .signWith(SignatureAlgorithm.HS512, secretKey)
+            .signWith(SignatureAlgorithm.HS256, secretKey)
             .setExpiration(validity)
             .compact();
     }

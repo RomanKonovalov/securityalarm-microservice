@@ -38,7 +38,7 @@ spring:
         serialization.indent_output: true
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:h2:mem:securityalarm;DB_CLOSE_DELAY=-1
+        url: jdbc:h2:./data/securityalarm;DB_CLOSE_DELAY=-1;AUTO_SERVER=TRUE
         username: securityalarm
         password:
     h2:

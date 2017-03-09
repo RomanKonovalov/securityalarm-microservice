@@ -40,8 +40,8 @@ spring:
         serialization.indent_output: true
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:h2:mem:securityalarmgateway;DB_CLOSE_DELAY=-1
-        username: securityalarmgateway
+        url: jdbc:h2:./data/securityalarm;DB_CLOSE_DELAY=-1;AUTO_SERVER=TRUE
+        username: securityalarm
         password:
     h2:
         console:
@@ -121,7 +121,7 @@ jhipster:
     security:
         authentication:
             jwt:
-                secret: qqq
+                secret: my-secret-token-to-change-in-production
                 # Token is valid 24 hours
                 token-validity-in-seconds: 86400
                 token-validity-in-seconds-for-remember-me: 2592000

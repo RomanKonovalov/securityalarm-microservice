@@ -12,7 +12,6 @@ public interface DeviceMapper {
     DeviceDTO deviceManagementDTOToDeviceDTO(DeviceManagementDTO deviceManagementDTO);
 
     @Mapping(target = "name", source = "login")
-    @Mapping(target = "authorized", ignore = true)
     @Mapping(target = "token", ignore = true)
     @Mapping(target = "secret", ignore = true)
     DeviceManagementDTO deviceToDeviceManagementDTO(Device device);
