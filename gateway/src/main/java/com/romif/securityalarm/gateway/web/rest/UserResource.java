@@ -1,8 +1,8 @@
 package com.romif.securityalarm.gateway.web.rest;
 
+import com.romif.securityalarm.domain.User;
 import com.romif.securityalarm.gateway.config.Constants;
 import com.codahale.metrics.annotation.Timed;
-import com.romif.securityalarm.gateway.domain.User;
 import com.romif.securityalarm.gateway.repository.UserRepository;
 import com.romif.securityalarm.gateway.security.AuthoritiesConstants;
 import com.romif.securityalarm.gateway.service.MailService;

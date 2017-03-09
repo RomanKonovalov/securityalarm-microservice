@@ -1,7 +1,7 @@
 package com.romif.securityalarm.gateway.config.audit;
 
-import com.romif.securityalarm.gateway.domain.PersistentAuditEvent;
 
+import com.romif.securityalarm.domain.PersistentAuditEvent;
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;

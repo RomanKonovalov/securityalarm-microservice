@@ -20,6 +20,8 @@
                 <th jh-sort-by="lastModifiedBy"><span data-translate="userManagement.lastModifiedBy">Last Modified By</span> <span class="glyphicon glyphicon-sort"></span></th>
                 <th jh-sort-by="lastModifiedDate"><span data-translate="userManagement.lastModifiedDate">Last Modified Date</span> <span class="glyphicon glyphicon-sort"></span></th>
                 <th></th>
+                <th></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -42,6 +44,16 @@
                 <td>{{user.createdDate | date:'dd/MM/yy HH:mm'}}</td>
                 <td>{{user.lastModifiedBy}}</td>
                 <td>{{user.lastModifiedDate | date:'dd/MM/yy HH:mm'}}</td>
+                <td>
+                    <button class="btn btn-primary" ui-sref="user-management.new({'user': user})">
+                        <span class="glyphicon glyphicon-flash"></span> <span>Add a new Device</span>
+                    </button>
+                </td>
+                <td>
+                    <button class="btn btn-primary" ui-sref="user-management.device-management({login:user.login,user: user})">
+                        <span class="glyphicon glyphicon-pencil"></span> <span>Manage Devices</span>
+                    </button>
+                </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

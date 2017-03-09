@@ -100,6 +100,37 @@
                 });
             }]
         })
+        .state('user-management.device-management', {
+            parent: 'user-management',
+            url: '/{login}/device-management',
+            data: {
+                authorities: ['ROLE_ADMIN']
+            },
+            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                $uibModal.open({
+                    templateUrl: 'app/admin/user-management/device-management-dialog.html',
+                    controller: 'DeviceManagementDialogController',
+                    controllerAs: 'vm',
+                    backdrop: 'static',
+                    size: 'lg',
+                    resolve: {
+                        Devices: ['Device', function (Device) {
+                            return Device.query({login : $stateParams.login});
+                        }],
+                        TrackingTypes: ['Util', function (Util) {
+                            return Util.trackingTypes();
+                        }],
+                        NotificationTypes: ['Util', function (Util) {
+                            return Util.notificationTypes();
+                        }]
+                    }
+                }).result.then(function() {
+                    $state.go('user-management', null, { reload: true });
+                }, function() {
+                    $state.go('^');
+                });
+            }]
+        })
         .state('user-management-detail', {
             parent: 'user-management',
             url: '/user/{login}',

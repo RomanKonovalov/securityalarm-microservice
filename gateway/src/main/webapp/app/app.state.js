@@ -5,9 +5,10 @@
         .module('securityalarmgatewayApp')
         .config(stateConfig);
 
-    stateConfig.$inject = ['$stateProvider'];
+    stateConfig.$inject = ['$stateProvider', '$locationProvider'];
 
-    function stateConfig($stateProvider) {
+    function stateConfig($stateProvider, $locationProvider) {
+        $locationProvider.html5Mode(true);
         $stateProvider.state('app', {
             abstract: true,
             views: {

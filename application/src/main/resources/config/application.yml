@@ -117,3 +117,11 @@ jhipster:
 # ===================================================================
 
 application:
+    security:
+            authentication:
+                oauth:
+                    clientid: securityalarmapp
+                    secret:
+            sms:
+                url: http://api.txtlocal.com/bulk_json
+                apikey: qp7CsPtLRvY-vtgvb8KgGwCNzVnaKCYdAFcvGZfyyL

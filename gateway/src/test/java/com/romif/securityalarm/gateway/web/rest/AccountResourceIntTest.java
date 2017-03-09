@@ -1,8 +1,8 @@
 package com.romif.securityalarm.gateway.web.rest;
 
+import com.romif.securityalarm.domain.Authority;
+import com.romif.securityalarm.domain.User;
 import com.romif.securityalarm.gateway.SecurityalarmgatewayApp;
-import com.romif.securityalarm.gateway.domain.Authority;
-import com.romif.securityalarm.gateway.domain.User;
 import com.romif.securityalarm.gateway.repository.AuthorityRepository;
 import com.romif.securityalarm.gateway.repository.UserRepository;
 import com.romif.securityalarm.gateway.security.AuthoritiesConstants;

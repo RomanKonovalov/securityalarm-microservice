@@ -1,9 +1,8 @@
 package com.romif.securityalarm.gateway.service.dto;
 
+import com.romif.securityalarm.domain.Authority;
+import com.romif.securityalarm.domain.User;
 import com.romif.securityalarm.gateway.config.Constants;
-
-import com.romif.securityalarm.gateway.domain.Authority;
-import com.romif.securityalarm.gateway.domain.User;
 
 import org.hibernate.validator.constraints.Email;
 

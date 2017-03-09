@@ -1,6 +1,6 @@
 package com.romif.securityalarm.gateway.security;
 
-import com.romif.securityalarm.gateway.domain.User;
+import com.romif.securityalarm.domain.User;
 import com.romif.securityalarm.gateway.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

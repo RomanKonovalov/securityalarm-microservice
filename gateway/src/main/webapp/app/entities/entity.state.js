@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('securityalarmgatewayApp')
+        .module(('securityalarmgatewayApp'))
         .config(stateConfig);
 
     stateConfig.$inject = ['$stateProvider'];

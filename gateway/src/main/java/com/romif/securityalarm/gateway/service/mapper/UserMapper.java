@@ -1,7 +1,7 @@
 package com.romif.securityalarm.gateway.service.mapper;
 
-import com.romif.securityalarm.gateway.domain.Authority;
-import com.romif.securityalarm.gateway.domain.User;
+import com.romif.securityalarm.domain.Authority;
+import com.romif.securityalarm.domain.User;
 import com.romif.securityalarm.gateway.service.dto.UserDTO;
 import org.mapstruct.*;
 

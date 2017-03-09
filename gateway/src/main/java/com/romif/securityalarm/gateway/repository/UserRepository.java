@@ -1,8 +1,8 @@
 package com.romif.securityalarm.gateway.repository;
 
-import com.romif.securityalarm.gateway.domain.User;
-
 import java.time.ZonedDateTime;
+
+import com.romif.securityalarm.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;

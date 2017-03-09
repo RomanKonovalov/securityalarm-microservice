@@ -1,7 +1,6 @@
 package com.romif.securityalarm.gateway.service;
 
-import com.romif.securityalarm.gateway.domain.User;
-
+import com.romif.securityalarm.domain.User;
 import io.github.jhipster.config.JHipsterProperties;
 
 import org.apache.commons.lang3.CharEncoding;

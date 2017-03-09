@@ -1,7 +1,6 @@
 package com.romif.securityalarm.security;
 
 import com.romif.securityalarm.config.Constants;
-
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
 

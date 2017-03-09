@@ -1,8 +1,8 @@
 package com.romif.securityalarm.gateway.web.rest;
 
+import com.romif.securityalarm.domain.PersistentAuditEvent;
 import com.romif.securityalarm.gateway.SecurityalarmgatewayApp;
 import com.romif.securityalarm.gateway.config.audit.AuditEventConverter;
-import com.romif.securityalarm.gateway.domain.PersistentAuditEvent;
 import com.romif.securityalarm.gateway.repository.PersistenceAuditEventRepository;
 import com.romif.securityalarm.gateway.service.AuditEventService;
 import org.junit.Before;

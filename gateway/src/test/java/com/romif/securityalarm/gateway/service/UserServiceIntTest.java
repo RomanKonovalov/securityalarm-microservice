@@ -1,7 +1,7 @@
 package com.romif.securityalarm.gateway.service;
 
+import com.romif.securityalarm.domain.User;
 import com.romif.securityalarm.gateway.SecurityalarmgatewayApp;
-import com.romif.securityalarm.gateway.domain.User;
 import com.romif.securityalarm.gateway.config.Constants;
 import com.romif.securityalarm.gateway.repository.UserRepository;
 import com.romif.securityalarm.gateway.service.dto.UserDTO;

@@ -1,8 +1,8 @@
 package com.romif.securityalarm.gateway.repository;
 
+import com.romif.securityalarm.domain.PersistentAuditEvent;
 import com.romif.securityalarm.gateway.config.Constants;
 import com.romif.securityalarm.gateway.config.audit.AuditEventConverter;
-import com.romif.securityalarm.gateway.domain.PersistentAuditEvent;
 
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.boot.actuate.audit.AuditEventRepository;
@@ -29,7 +29,7 @@ public class CustomAuditEventRepository implements AuditEventRepository {
     private final AuditEventConverter auditEventConverter;
 
     public CustomAuditEventRepository(PersistenceAuditEventRepository persistenceAuditEventRepository,
-            AuditEventConverter auditEventConverter) {
+                                      AuditEventConverter auditEventConverter) {
 
         this.persistenceAuditEventRepository = persistenceAuditEventRepository;
         this.auditEventConverter = auditEventConverter;

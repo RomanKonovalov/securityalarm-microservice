@@ -1,6 +1,6 @@
 package com.romif.securityalarm.gateway.repository;
 
-import com.romif.securityalarm.gateway.domain.Authority;
+import com.romif.securityalarm.domain.Authority;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
