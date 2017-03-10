@@ -55,7 +55,6 @@ public class DeviceService {
         List<DeviceManagementDTO> deviceDTOS = deviceCredentialsRepository.findAllByDeviceUserLogin(login).stream()
             .map(deviceCredentials -> {
                 DeviceManagementDTO deviceDTO = deviceMapper.deviceToDeviceManagementDTO(deviceCredentials.getDevice());
-                deviceDTO.setToken(deviceCredentials.getToken());
                 deviceDTO.setPauseToken(deviceCredentials.getPauseToken());
                 deviceDTO.setSecret(deviceCredentials.getSecret());
                 return deviceDTO;
@@ -65,7 +64,7 @@ public class DeviceService {
         return deviceDTOS;
     }
 
-    public List<DeviceDTO> getAllLoggedDevices(String login) {
+    public List<DeviceDTO> getAllActiveDevices(String login) {
 
         List<DeviceDTO> deviceDTOS = getAllDevices(login).stream()
             .filter(DeviceManagementDTO::isActive)
@@ -86,7 +85,7 @@ public class DeviceService {
 
         Device result = deviceRepository.save(device);
 
-        DeviceCredentials deviceCredentials = new DeviceCredentials(null, result, rawPassword, UUID.randomUUID().toString(), pauseToken, secret);
+        DeviceCredentials deviceCredentials = new DeviceCredentials(null, result, pauseToken, secret);
 
         deviceCredentialsRepository.save(deviceCredentials);
 

@@ -126,7 +126,7 @@ public class DeviceResource {
     public ResponseEntity<List<DeviceDTO>> getAllLoggedDevices() {
         String login = ((org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
 
-        List<DeviceDTO> deviceDtos = deviceService.getAllLoggedDevices(login);
+        List<DeviceDTO> deviceDtos = deviceService.getAllActiveDevices(login);
 
         return new ResponseEntity<>(deviceDtos, HttpStatus.OK);
     }

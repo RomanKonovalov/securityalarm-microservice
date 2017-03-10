@@ -8,7 +8,7 @@
     Alarm.$inject = ['$resource'];
 
     function Alarm ($resource) {
-        var service = $resource('api/alarms/:id', {}, {
+        var service = $resource('securityalarm/' + 'api/alarms/:id', {}, {
             'query': {method: 'GET', isArray: true},
             'save': { method:'POST' },
             'update': { method:'PUT' },

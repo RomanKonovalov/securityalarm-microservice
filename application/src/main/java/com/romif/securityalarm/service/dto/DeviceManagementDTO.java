@@ -25,8 +25,6 @@ public class DeviceManagementDTO {
 
     private boolean active;
 
-    private String token;
-
     private String pauseToken;
 
     private String secret;

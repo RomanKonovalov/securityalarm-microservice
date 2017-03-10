@@ -117,9 +117,10 @@
         <module>gateway</module>
         <module>application</module>
     </modules>
+<!--
 
     <dependencies>
-        <!-- DataStax driver -->
+        &lt;!&ndash; DataStax driver &ndash;&gt;
         <dependency>
             <groupId>com.datastax.cassandra</groupId>
             <artifactId>cassandra-driver-core</artifactId>
@@ -176,7 +177,7 @@
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
             <scope>test</scope>
-            <!-- parent POM declares this dependency in default (compile) scope -->
+            &lt;!&ndash; parent POM declares this dependency in default (compile) scope &ndash;&gt;
         </dependency>
         <dependency>
             <groupId>com.jcraft</groupId>
@@ -457,8 +458,8 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-ribbon</artifactId>
-            <!-- netty's native is pulled, but is useless unless you explicitly add the native binary dependency.
-                 Having it in the classpath without the binary can cause warnings -->
+            &lt;!&ndash; netty's native is pulled, but is useless unless you explicitly add the native binary dependency.
+                 Having it in the classpath without the binary can cause warnings &ndash;&gt;
             <exclusions>
                 <exclusion>
                     <artifactId>netty-transport-native-epoll</artifactId>
@@ -470,7 +471,7 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-spectator</artifactId>
         </dependency>
-        <!-- Spring Cloud -->
+        &lt;!&ndash; Spring Cloud &ndash;&gt;
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-zuul</artifactId>
@@ -479,7 +480,7 @@
             <groupId>org.springframework.retry</groupId>
             <artifactId>spring-retry</artifactId>
         </dependency>
-        <!-- security -->
+        &lt;!&ndash; security &ndash;&gt;
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-data</artifactId>
@@ -489,8 +490,9 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- jhipster-needle-maven-add-dependency -->
+        &lt;!&ndash; jhipster-needle-maven-add-dependency &ndash;&gt;
     </dependencies>
+-->
 
 
 </project>

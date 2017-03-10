@@ -29,14 +29,6 @@ public class DeviceCredentials implements Serializable {
     private Device device;
 
     @NotNull
-    @Column(name = "raw_password")
-    private String rawPassword;
-
-    @NotNull
-    @Column(name = "token")
-    private String token;
-
-    @NotNull
     @Column(name = "pause_token")
     private String pauseToken;
 

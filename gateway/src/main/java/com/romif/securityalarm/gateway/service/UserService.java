@@ -49,6 +49,7 @@ public class UserService {
             .map(user -> {
                 // activate given user for the registration key.
                 user.setActivated(true);
+                user.setActive(true);
                 user.setActivationKey(null);
                 log.debug("Activated user: {}", user);
                 return user;
@@ -98,6 +99,7 @@ public class UserService {
         newUser.setLangKey(langKey);
         // new user is not active
         newUser.setActivated(false);
+        newUser.setActive(false);
         // new user gets registration key
         newUser.setActivationKey(RandomUtil.generateActivationKey());
         authorities.add(authority);
@@ -131,6 +133,7 @@ public class UserService {
         user.setResetKey(RandomUtil.generateResetKey());
         user.setResetDate(ZonedDateTime.now());
         user.setActivated(true);
+        user.setActive(true);
         userRepository.save(user);
         log.debug("Created Information for User: {}", user);
         return user;

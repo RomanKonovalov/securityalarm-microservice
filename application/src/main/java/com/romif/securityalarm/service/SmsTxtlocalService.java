@@ -66,14 +66,6 @@ public class SmsTxtlocalService {
         stringBuilder.append(";");
         stringBuilder.append(applicationProperties.getHttp().getHost());
         stringBuilder.append(";");
-        stringBuilder.append(Constants.SEND_LOCATION_PATH);
-        stringBuilder.append(";");
-        stringBuilder.append(Constants.PAUSE_ALARM_PATH);
-        stringBuilder.append(";");
-        stringBuilder.append(Constants.RESUME_ALARM_PATH);
-        stringBuilder.append(";");
-        stringBuilder.append(deviceCredentials.getToken());
-        stringBuilder.append(";");
         stringBuilder.append(StringUtils.remove(device.getUser().getPhone(), "+"));
         stringBuilder.append(";");
 

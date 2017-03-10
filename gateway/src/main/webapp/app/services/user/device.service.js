@@ -8,7 +8,7 @@
     Device.$inject = ['$resource'];
 
     function Device ($resource) {
-        var service = $resource('api/devices/:login/:action', {}, {
+        var service = $resource('securityalarm/' + 'api/devices/:login/:action', {}, {
             'query': {method: 'GET', isArray: true},
             'save': { method:'POST' },
             'update': { method:'PUT' },

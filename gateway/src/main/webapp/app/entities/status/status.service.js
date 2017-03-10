@@ -7,7 +7,7 @@
     Status.$inject = ['$resource'];
 
     function Status ($resource) {
-        var resourceUrl =  'api/statuses/:id';
+        var resourceUrl =  'securityalarm/' + 'api/statuses/:id';
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},

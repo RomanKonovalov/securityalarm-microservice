@@ -11,7 +11,7 @@ import java.util.Optional;
  */
 public interface DeviceRepository extends JpaRepository<Device, Long> {
 
-    List<Device> findAllByUserLogin(String createdBy);
+    List<Device> findAllByUserLoginAndActiveTrue(String createdBy);
 
     Optional<Device> findOneByLogin(String login);
 

@@ -15,6 +15,96 @@
     -->
     <changeSet id="0000000000002" author="jhipster">
 
+        <createTable tableName="status">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="device_state" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="latitude" type="float">
+                <constraints nullable="true" />
+            </column>
+            <column name="longitude" type="float">
+                <constraints nullable="true" />
+            </column>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+
+        <createTable tableName="alarm">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="device_id" type="bigint">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="paused" type="boolean"/>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+
+        <createTable tableName="alarm_notification_type">
+            <column name="alarm_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="notification_type" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="alarm_tracking_type">
+            <column name="alarm_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tracking_type" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="device_credentials">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="device_id" type="bigint">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="pause_token" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="secret" type="varchar(8)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="device_id"
+                                 baseTableName="device_credentials"
+                                 constraintName="fk_device_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/statuses.csv"
+                  separator=";"
+                  tableName="status"/>
+
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/device_credentials.csv"
+                  separator=";"
+                  tableName="device_credentials"/>
+
     </changeSet>
 
 </databaseChangeLog>

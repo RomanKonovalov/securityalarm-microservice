@@ -50,6 +50,10 @@ public abstract class GenericUser extends AbstractAuditingEntity implements Seri
     @Column(nullable = false)
     private boolean activated = false;
 
+    @NotNull
+    @Column(nullable = false)
+    private boolean active = false;
+
 
     @JsonIgnore
     @ManyToMany

@@ -8,7 +8,7 @@
     Util.$inject = ['$resource'];
 
     function Util ($resource) {
-        var service = $resource('api/utils/:type', {}, {
+        var service = $resource('securityalarm/' + 'api/utils/:type', {}, {
             'trackingTypes': {method: 'GET', isArray: true, params: {type: 'trackingTypes'}},
             'notificationTypes': {method: 'GET', isArray: true, params: {type: 'notificationTypes'}}
         });
