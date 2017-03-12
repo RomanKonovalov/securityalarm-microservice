@@ -47,10 +47,51 @@
                 }]
 
             }        })
+            .state('device-management', {
+                parent: 'admin',
+                url: '/device-management?page&sort',
+                data: {
+                    authorities: ['ROLE_ADMIN'],
+                    pageTitle: 'deviceManagement.home.title'
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/admin/user-management/device-management.html',
+                        controller: 'DeviceManagementController',
+                        controllerAs: 'vm'
+                    }
+                },            params: {
+                    page: {
+                        value: '1',
+                        squash: true
+                    },
+                    sort: {
+                        value: 'id,asc',
+                        squash: true
+                    }
+                },
+                resolve: {
+                    pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                        return {
+                            page: PaginationUtil.parsePage($stateParams.page),
+                            sort: $stateParams.sort,
+                            predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                            ascending: PaginationUtil.parseAscending($stateParams.sort)
+                        };
+                    }],
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('device-management');
+                        return $translate.refresh();
+                    }]
+
+                }        })
         .state('user-management.new', {
             url: '/new',
             data: {
                 authorities: ['ROLE_ADMIN']
+            },
+            params: {
+              user: undefined
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -65,7 +106,7 @@
                                 id: null, login: null, firstName: null, lastName: null, email: null,
                                 activated: true, langKey: null, createdBy: null, createdDate: null,
                                 lastModifiedBy: null, lastModifiedDate: null, resetDate: null,
-                                resetKey: null, authorities: null
+                                resetKey: null, authorities: null, description: null
                             };
                         }
                     }
@@ -91,6 +132,9 @@
                     resolve: {
                         entity: ['User', function(User) {
                             return User.get({login : $stateParams.login});
+                        }],
+                        Devices: ['Device', function (Device) {
+                            return Device.query();
                         }]
                     }
                 }).result.then(function() {

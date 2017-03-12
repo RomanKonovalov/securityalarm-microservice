@@ -1,6 +1,7 @@
 package com.romif.securityalarm.gateway.security.jwt;
 
-import com.romif.securityalarm.gateway.security.AuthoritiesConstants;
+import com.romif.securityalarm.security.AuthoritiesConstants;
+import com.romif.securityalarm.security.jwt.TokenProvider;
 import io.github.jhipster.config.JHipsterProperties;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

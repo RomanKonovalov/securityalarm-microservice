@@ -1,7 +1,7 @@
 package com.romif.securityalarm.gateway.gateway.ratelimiting;
 
-import com.romif.securityalarm.gateway.security.SecurityUtils;
 
+import com.romif.securityalarm.security.SecurityUtils;
 import io.github.jhipster.config.JHipsterProperties;
 
 import java.util.Calendar;

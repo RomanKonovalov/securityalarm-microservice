@@ -1,11 +1,9 @@
 package com.romif.securityalarm.security.jwt;
 
+import com.romif.securityalarm.security.AuthoritiesConstants;
 import io.github.jhipster.config.JHipsterProperties;
-
-import java.util.*;
-import java.util.stream.Collectors;
-import javax.annotation.PostConstruct;
-
+import io.jsonwebtoken.*;
+import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,7 +13,11 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
-import io.jsonwebtoken.*;
+import javax.annotation.PostConstruct;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.stream.Collectors;
 
 @Component
 public class TokenProvider {
@@ -66,6 +68,19 @@ public class TokenProvider {
             .signWith(SignatureAlgorithm.HS256, secretKey)
             .setExpiration(validity)
             .compact();
+    }
+
+    public String createDeviceToken(String login) {
+        String authorities = AuthoritiesConstants.DEVICE;
+
+        Date validity = DateUtils.setYears(new Date(), 10);
+
+        return Jwts.builder()
+                .setSubject(login)
+                .claim(AUTHORITIES_KEY, authorities)
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .setExpiration(validity)
+                .compact();
     }
 
     public Authentication getAuthentication(String token) {

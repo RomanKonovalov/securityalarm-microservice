@@ -7,6 +7,7 @@ import com.romif.securityalarm.domain.Device;
 import com.romif.securityalarm.domain.DeviceCredentials;
 import com.romif.securityalarm.repository.DeviceCredentialsRepository;
 import com.romif.securityalarm.repository.DeviceRepository;
+import com.romif.securityalarm.security.jwt.TokenProvider;
 import com.romif.securityalarm.service.dto.DeviceConfigDTO;
 import com.romif.securityalarm.service.dto.DeviceDTO;
 import com.romif.securityalarm.service.dto.DeviceManagementDTO;
@@ -17,9 +18,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
@@ -50,28 +54,42 @@ public class DeviceService {
     @Autowired
     private SmsTxtlocalService smsService;
 
-    public List<DeviceManagementDTO> getAllDevices(String login) {
+    @Autowired
+    private TokenProvider tokenProvider;
 
-        List<DeviceManagementDTO> deviceDTOS = deviceCredentialsRepository.findAllByDeviceUserLogin(login).stream()
-            .map(deviceCredentials -> {
-                DeviceManagementDTO deviceDTO = deviceMapper.deviceToDeviceManagementDTO(deviceCredentials.getDevice());
-                deviceDTO.setPauseToken(deviceCredentials.getPauseToken());
-                deviceDTO.setSecret(deviceCredentials.getSecret());
-                return deviceDTO;
-            })
-            .collect(Collectors.toList());
+    public Optional<DeviceManagementDTO> getDevice(String login) {
 
-        return deviceDTOS;
+        return deviceRepository.findOneByLogin(login)
+            .map(device -> deviceMapper.deviceToDeviceManagementDTO(device));
     }
 
-    public List<DeviceDTO> getAllActiveDevices(String login) {
+    public List<DeviceDTO> getAllDevicesForUser(String login) {
 
-        List<DeviceDTO> deviceDTOS = getAllDevices(login).stream()
-            .filter(DeviceManagementDTO::isActive)
-            .map(deviceManagementDTO -> deviceMapper.deviceManagementDTOToDeviceDTO(deviceManagementDTO))
+        return deviceRepository.findAllByUserLogin(login).stream()
+            .map(device -> deviceMapper.deviceToDeviceDTO(device))
             .collect(Collectors.toList());
+    }
 
-        return deviceDTOS;
+    @Transactional
+    public List<DeviceDTO> getAllActiveDevicesForUser(String login) {
+
+        return deviceRepository.findAllByUserLoginAndActiveTrue(login).stream()
+            .map(device -> deviceMapper.deviceToDeviceDTO(device))
+            .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public Page<DeviceDTO> getAllDevices(Pageable pageable) {
+
+        return deviceRepository.findAll(pageable)
+            .map(device -> deviceMapper.deviceToDeviceDTO(device));
+    }
+
+    @Transactional
+    public Page<DeviceDTO> getAllFreeDevices(Pageable pageable) {
+
+        return deviceRepository.findAllByUserIsNull(pageable)
+            .map(device -> deviceMapper.deviceToDeviceDTO(device));
     }
 
     public Device createDevice(Device device) {
@@ -79,19 +97,24 @@ public class DeviceService {
         String rawPassword = RandomUtil.generatePassword();
         String pauseToken = UUID.randomUUID().toString();
         String secret = RandomStringUtils.randomAlphanumeric(8);
+        String login = RandomStringUtils.randomAlphanumeric(10);
 
         device.setPassword(passwordEncoder.encode(rawPassword));
         device.setPauseToken(passwordEncoder.encode(pauseToken));
+        device.setLogin(login);
+
+        String token = tokenProvider.createDeviceToken(device.getLogin());
 
         Device result = deviceRepository.save(device);
 
-        DeviceCredentials deviceCredentials = new DeviceCredentials(null, result, pauseToken, secret);
+        DeviceCredentials deviceCredentials = new DeviceCredentials(null, result, token, pauseToken, secret);
 
         deviceCredentialsRepository.save(deviceCredentials);
 
         return result;
     }
 
+    @Transactional
     public boolean updateDevice(DeviceDTO deviceDTO) {
         return deviceRepository.findOneById(deviceDTO.getId()).map(device -> {
             device.setPhone(deviceDTO.getPhone());
@@ -111,7 +134,7 @@ public class DeviceService {
 
     public boolean activateDevice(String login) {
         return deviceRepository.findOneByLogin(login).map(device -> {
-            device.setActivated(true);
+            device.setActive(true);
             deviceRepository.save(device);
             log.debug("Activated Device: {}", device);
             return true;
@@ -136,7 +159,7 @@ public class DeviceService {
 
     public boolean deactivateDevice(String login) {
         return deviceRepository.findOneByLogin(login).map(device -> {
-            device.setActivated(false);
+            device.setActive(false);
             deviceRepository.save(device);
             log.debug("Deactivated Device: {}", device);
             return true;

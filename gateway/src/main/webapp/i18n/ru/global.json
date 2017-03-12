@@ -23,6 +23,7 @@
                 "main": "Администрирование",
                 "gateway": "Gateway",
                 "userManagement": "Управление пользователями",
+                "deviceManagement": "Управление устройствами",
                 "tracker": "Трекер польз.",
                 "metrics": "Метрики",
                 "health": "Состояние",

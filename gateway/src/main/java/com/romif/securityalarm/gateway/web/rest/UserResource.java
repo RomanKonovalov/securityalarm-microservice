@@ -4,13 +4,13 @@ import com.romif.securityalarm.domain.User;
 import com.romif.securityalarm.gateway.config.Constants;
 import com.codahale.metrics.annotation.Timed;
 import com.romif.securityalarm.gateway.repository.UserRepository;
-import com.romif.securityalarm.gateway.security.AuthoritiesConstants;
 import com.romif.securityalarm.gateway.service.MailService;
 import com.romif.securityalarm.gateway.service.UserService;
 import com.romif.securityalarm.gateway.service.dto.UserDTO;
 import com.romif.securityalarm.gateway.web.rest.vm.ManagedUserVM;
 import com.romif.securityalarm.gateway.web.rest.util.HeaderUtil;
 import com.romif.securityalarm.gateway.web.rest.util.PaginationUtil;
+import com.romif.securityalarm.security.AuthoritiesConstants;
 import io.github.jhipster.web.util.ResponseUtil;
 import io.swagger.annotations.ApiParam;
 

@@ -1,13 +1,13 @@
 package com.romif.securityalarm.gateway.web.rest;
 
-import com.romif.securityalarm.gateway.security.jwt.JWTConfigurer;
-import com.romif.securityalarm.gateway.security.jwt.TokenProvider;
 import com.romif.securityalarm.gateway.web.rest.vm.LoginVM;
 
 import java.util.Collections;
 
 import com.codahale.metrics.annotation.Timed;
 
+import com.romif.securityalarm.security.jwt.JWTConfigurer;
+import com.romif.securityalarm.security.jwt.TokenProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

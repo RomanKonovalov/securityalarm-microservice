@@ -1,5 +1,7 @@
 package com.romif.securityalarm.gateway.security;
 
+import com.romif.securityalarm.security.AuthoritiesConstants;
+import com.romif.securityalarm.security.SecurityUtils;
 import org.junit.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;

@@ -23,6 +23,7 @@
                 "main": "Administration",
                 "gateway": "Gateway",
                 "userManagement": "User management",
+                "deviceManagement": "Device management",
                 "tracker": "User tracker",
                 "metrics": "Metrics",
                 "health": "Health",

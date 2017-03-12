@@ -5,15 +5,21 @@
         .module(('securityalarmgatewayApp'))
         .controller('MyDevicesController', MyDevicesController);
 
-    MyDevicesController.$inject = ['$scope', 'Device', 'Devices'];
+    MyDevicesController.$inject = ['$scope', 'Device', 'Principal', 'User'];
 
-    function MyDevicesController ($scope, Device, Devices) {
+    function MyDevicesController ($scope, Device, Principal, User) {
 
-        $scope.devices = Devices;
+        var loadAll = function () {
+            Principal.identity().then(function(account) {
+                $scope.devices = User.devices({'login': account.login});
+            });
+        };
+
+        loadAll();
 
         $scope.saveDevice = function (device) {
             Device.update(device, function () {
-                $scope.devices = Device.query();
+                loadAll();
             });
         };
 

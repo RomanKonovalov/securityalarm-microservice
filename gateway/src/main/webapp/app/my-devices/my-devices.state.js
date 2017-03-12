@@ -20,12 +20,12 @@
                     controller: 'MyDevicesController',
                     controllerAs: 'vm'
                 }
-            },
+            }/*,
             resolve: {
                 Devices: ['Device', function (Device) {
                     return Device.query();
                 }]
-            }
+            }*/
         });
     }
 })();

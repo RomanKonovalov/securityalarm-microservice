@@ -33,4 +33,8 @@ public class DeviceDTO {
 
     private ConfigStatus configStatus;
 
+    private boolean active;
+
+    private String userLogin;
+
 }

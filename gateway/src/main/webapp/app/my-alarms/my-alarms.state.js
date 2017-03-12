@@ -22,16 +22,12 @@
                 }
             },
             resolve: {
-                Devices: ['Device', function (Device) {
-                    return Device.query();
-                }],
                 TrackingTypes: ['Util', function (Util) {
                     return Util.trackingTypes();
                 }],
                 NotificationTypes: ['Util', function (Util) {
                     return Util.notificationTypes();
                 }]
-
             }
         });
     }

@@ -5,21 +5,31 @@
         .module('securityalarmgatewayApp')
         .controller('UserManagementDialogController',UserManagementDialogController);
 
-    UserManagementDialogController.$inject = ['$stateParams', '$uibModalInstance', 'entity', 'User', 'JhiLanguageService'];
+    UserManagementDialogController.$inject = ['$stateParams', '$uibModalInstance', 'entity', 'User', 'uuid4', 'Device'];
 
-    function UserManagementDialogController ($stateParams, $uibModalInstance, entity, User, JhiLanguageService) {
+    function UserManagementDialogController ($stateParams, $uibModalInstance, entity, User, uuid4, Device) {
         var vm = this;
 
-        vm.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
+        vm.authorities = ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_DEVICE'];
         vm.clear = clear;
         vm.languages = null;
         vm.save = save;
         vm.user = entity;
 
+        vm.existedUser = $stateParams.user;
+        vm.isDevice = vm.existedUser != undefined;
 
-        JhiLanguageService.getAll().then(function (languages) {
-            vm.languages = languages;
-        });
+        var uuid = uuid4.generate();
+
+        if (vm.isDevice) {
+            vm.user.authorities = ['ROLE_DEVICE'];
+        }
+
+        vm.changeLogin = function () {
+            vm.user.login = vm.user.description + '_' + uuid;
+            vm.user.email = vm.user.login + '@localhost';
+        };
+
 
         function clear () {
             $uibModalInstance.dismiss('cancel');
@@ -38,8 +48,12 @@
             vm.isSaving = true;
             if (vm.user.id !== null) {
                 User.update(vm.user, onSaveSuccess, onSaveError);
-            } else {
+            } else if (!vm.isDevice) {
+                vm.user.langKey = 'en';
                 User.save(vm.user, onSaveSuccess, onSaveError);
+            } else {
+                vm.user.user = vm.existedUser || null;
+                Device.save(vm.user, onSaveSuccess, onSaveError);
             }
         }
     }

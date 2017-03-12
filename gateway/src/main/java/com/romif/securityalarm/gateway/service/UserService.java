@@ -5,11 +5,11 @@ import com.romif.securityalarm.domain.User;
 import com.romif.securityalarm.gateway.repository.AuthorityRepository;
 import com.romif.securityalarm.gateway.config.Constants;
 import com.romif.securityalarm.gateway.repository.UserRepository;
-import com.romif.securityalarm.gateway.security.AuthoritiesConstants;
-import com.romif.securityalarm.gateway.security.SecurityUtils;
 import com.romif.securityalarm.gateway.service.util.RandomUtil;
 import com.romif.securityalarm.gateway.service.dto.UserDTO;
 
+import com.romif.securityalarm.security.AuthoritiesConstants;
+import com.romif.securityalarm.security.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;

@@ -81,6 +81,9 @@
             <column name="device_id" type="bigint">
                 <constraints nullable="false" unique="true"/>
             </column>
+            <column name="token" type="varchar">
+                <constraints nullable="false"/>
+            </column>
             <column name="pause_token" type="varchar">
                 <constraints nullable="false"/>
             </column>

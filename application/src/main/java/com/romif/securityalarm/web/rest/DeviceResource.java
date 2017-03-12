@@ -12,10 +12,15 @@ import com.romif.securityalarm.service.SmsTxtlocalService;
 import com.romif.securityalarm.service.dto.DeviceDTO;
 import com.romif.securityalarm.service.dto.DeviceManagementDTO;
 import com.romif.securityalarm.web.rest.util.HeaderUtil;
+import com.romif.securityalarm.web.rest.util.PaginationUtil;
+import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -70,11 +75,11 @@ public class DeviceResource {
     @GetMapping("/devices/{login:" + Constants.LOGIN_REGEX + "}")
     @Timed
     @Secured(AuthoritiesConstants.ADMIN)
-    public ResponseEntity<List<DeviceManagementDTO>> getDevices(@PathVariable String login) {
-        log.debug("REST request to get Devices for : {}", login);
-        List<DeviceManagementDTO> deviceDtos = deviceService.getAllDevices(login);
+    public ResponseEntity<DeviceManagementDTO> getDevice(@PathVariable String login) {
+        log.debug("REST request to get Device : {}", login);
 
-        return new ResponseEntity<>(deviceDtos, HttpStatus.OK);
+        return ResponseUtil.wrapOrNotFound(deviceService.getDevice(login));
+
     }
 
     @PostMapping("/devices/{login:" + Constants.LOGIN_REGEX + "}/login")
@@ -122,13 +127,13 @@ public class DeviceResource {
 
     @GetMapping("/devices")
     @Timed
-    @Secured(AuthoritiesConstants.USER)
-    public ResponseEntity<List<DeviceDTO>> getAllLoggedDevices() {
-        String login = ((org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+    @Secured(AuthoritiesConstants.ADMIN)
+    public ResponseEntity<List<DeviceDTO>> getAllDevices(Pageable pageable, @RequestParam boolean free) throws URISyntaxException {
 
-        List<DeviceDTO> deviceDtos = deviceService.getAllActiveDevices(login);
+        Page<DeviceDTO> page = free ? deviceService.getAllFreeDevices(pageable) : deviceService.getAllDevices(pageable);
 
-        return new ResponseEntity<>(deviceDtos, HttpStatus.OK);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/devices");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     @PostMapping("/devices")

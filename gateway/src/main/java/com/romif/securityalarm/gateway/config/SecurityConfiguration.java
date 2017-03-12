@@ -1,8 +1,8 @@
 package com.romif.securityalarm.gateway.config;
 
-import com.romif.securityalarm.gateway.security.*;
-import com.romif.securityalarm.gateway.security.jwt.*;
-
+import com.romif.securityalarm.security.AuthoritiesConstants;
+import com.romif.securityalarm.security.jwt.JWTConfigurer;
+import com.romif.securityalarm.security.jwt.TokenProvider;
 import io.github.jhipster.security.*;
 
 import org.springframework.beans.factory.BeanInitializationException;

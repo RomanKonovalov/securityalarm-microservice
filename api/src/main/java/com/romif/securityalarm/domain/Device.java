@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -15,7 +16,7 @@ import javax.validation.constraints.Size;
 @Entity
 @DiscriminatorValue(value = "device")
 @Data
-@ToString(exclude = {"alarm", "user"})
+@ToString(exclude = {"alarm", "user", "deviceCredentials"})
 @EqualsAndHashCode(callSuper = false, of = "login")
 public class Device extends GenericUser {
 
@@ -24,11 +25,11 @@ public class Device extends GenericUser {
     @Column(name = "first_name", length = 50)
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id", nullable = true)
     private User user;
 
-    @OneToOne(optional=true, mappedBy="device")
+    @OneToOne(optional=true, mappedBy="device", fetch = FetchType.LAZY)
     private Alarm alarm;
 
     @JsonIgnore
@@ -37,12 +38,14 @@ public class Device extends GenericUser {
     @Column(name = "pause_token_hash",length = 60)
     private String pauseToken;
 
-
     @NotNull
     @Column(name = "apn", length = 50)
     private String apn;
 
     @Column(name = "config_status", length = 50)
     private ConfigStatus configStatus = ConfigStatus.NOT_CONFIGURED;
+
+    @OneToOne(mappedBy="device", fetch = FetchType.LAZY)
+    private DeviceCredentials deviceCredentials;
 
 }
