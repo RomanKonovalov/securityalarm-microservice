@@ -84,33 +84,6 @@ public class StatusResource {
     }
 
     /**
-     * GET  /statuses : get all the statuses.
-     *
-     * @param pageable the pagination information
-     * @return the ResponseEntity with status 200 (OK) and the list of statuses in body
-     * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
-     */
-    @GetMapping("/api/statuses")
-    @Secured("ROLE_USER")
-    @Timed
-    public ResponseEntity<List<Status>> getAllStatuses(@ApiParam Pageable pageable,
-                                                       @RequestParam(required = false) ZonedDateTime startDate,
-                                                       @RequestParam(required = false) ZonedDateTime endDate,
-                                                       @RequestParam Device device)
-        throws URISyntaxException {
-        log.debug("REST request to get a page of Statuses");
-        String login =  ((org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-
-        if (device == null || !login.equals(device.getUser().getLogin())) {
-            HttpHeaders headers = HeaderUtil.createFailureAlert("alarm", "deviceNotFound", "Device not found");
-            return new ResponseEntity<>(Collections.emptyList(), headers, HttpStatus.BAD_REQUEST);
-        }
-        Page<Status> page = statusService.findAll(pageable, startDate, endDate, device);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/statuses");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }
-
-    /**
      * GET  /statuses/:id : get the "id" status.
      *
      * @param id the id of the status to retrieve

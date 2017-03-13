@@ -20,7 +20,8 @@
             'save': { method:'POST' },
             'update': { method:'PUT' },
             'delete':{ method:'DELETE'},
-            'devices': { method:'GET', isArray: true, params: {'login': '@login', field: 'devices', prefix: 'securityalarm'} }
+            'devices': { method:'GET', isArray: true, params: {'login': '@login', field: 'devices', prefix: 'securityalarm'} },
+            'addDevice': { method:'POST', params: {'login': '@login', field: 'devices', prefix: 'securityalarm'} }
         });
 
         return service;

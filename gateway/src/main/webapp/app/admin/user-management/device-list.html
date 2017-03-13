@@ -1,0 +1,24 @@
+<form name="addDeviceForm" role="form" novalidate show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myUserLabel">Choose Device</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <jhi-alert></jhi-alert>
+
+            <div class="panel-body form-horizontal">
+
+                <ul>
+                    <li ng-repeat="device in vm.devices">
+                        <a ui-sref="device-management.edit({login:device.login})">{{device.login}} {{device.description}}</a>
+                    </li>
+                </ul>
+
+            </div>
+
+    </div>
+
+</form>

@@ -5,9 +5,9 @@
         .module(('securityalarmgatewayApp'))
         .controller('MapController', MapController);
 
-    MapController.$inject = ['$scope', '$interval', 'uiGmapGoogleMapApi', 'Status', 'Account', 'AlertService', 'Principal','DateUtils', 'devices'];
+    MapController.$inject = ['$scope', '$interval', 'uiGmapGoogleMapApi', 'Device', 'Account', 'AlertService', 'Principal','DateUtils', 'devices'];
 
-    function MapController ($scope, $interval, uiGmapGoogleMapApi, Status, Account,  AlertService, Principal, DateUtils, devices) {
+    function MapController ($scope, $interval, uiGmapGoogleMapApi, Device, Account,  AlertService, Principal, DateUtils, devices) {
 
         $scope.devices = devices;
         $scope.device = {};
@@ -99,13 +99,13 @@
         });
 
         function loadAll () {
-            Status.query({
+            Device.statuses({
                 page: 0,
                 size: limit,
                 sort: 'createdDate,desc',
                 startDate: DateUtils.convertLocalDateToServer($scope.startDate),
                 endDate: DateUtils.convertLocalDateToServer($scope.endDate),
-                device: $scope.device.id
+                login: $scope.device.login
             }, onSuccess, onError);
 
             function onSuccess(data) {

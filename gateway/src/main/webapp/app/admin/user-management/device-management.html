@@ -3,7 +3,7 @@
     <jhi-alert></jhi-alert>
     <div class="row">
       <div class="col-md-4">
-          <button class="btn btn-primary" ui-sref="user-management.new({'user': null})">
+          <button class="btn btn-primary" ui-sref="device-management.new">
               <span class="glyphicon glyphicon-flash"></span> <span data-translate="userManagement.home.createDeviceLabel">Create a new Device</span>
           </button>
       </div>
@@ -22,7 +22,7 @@
             </thead>
             <tbody>
             <tr ng-repeat="user in vm.users track by user.id">
-                <td><a ui-sref="user-management-detail({login:user.login})">{{user.id}}</a></td>
+                <td><a ui-sref="device-management-detail({login:user.login})">{{user.id}}</a></td>
                 <td>
                     <p class="label label-danger" ng-show="!user.active" data-translate="userManagement.deactivated">Not active</p>
                     <p class="label label-success" ng-show="user.active" data-translate="userManagement.activated">Active</p>
@@ -33,13 +33,13 @@
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
-                                ui-sref="user-management-detail({login:user.login})"
+                                ui-sref="device-management-detail({login:user.login})"
                                 class="btn btn-info btn-sm">
                             <span class="glyphicon glyphicon-eye-open"></span>
                             <span class="hidden-xs hidden-sm" data-translate="entity.action.view"></span>
                         </button>
                         <button type="submit"
-                                ui-sref="user-management.edit({login:user.login})"
+                                ui-sref="device-management.edit({login:user.login})"
                                 class="btn btn-primary btn-sm">
                             <span class="glyphicon glyphicon-pencil"></span>
                             <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"></span>

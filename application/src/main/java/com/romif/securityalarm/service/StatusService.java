@@ -44,6 +44,7 @@ public class StatusService {
      * @return the persisted entity
      */
     @CachePut(value = "status", key = "#result.createdBy")
+    @Transactional
     public Status save(Status status) {
         log.debug("Request to save Status : {}", status);
         Status result = statusRepository.save(status);
@@ -58,6 +59,7 @@ public class StatusService {
     }
 
     @CachePut(value = "statusQueue", key = "#status.createdBy")
+    @Transactional
     public Queue<Status> putInQueue(Status status, Queue<Status> statusQueue) {
         statusQueue.add(status);
         return statusQueue;
@@ -77,13 +79,13 @@ public class StatusService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Status> findAll(Pageable pageable, ZonedDateTime startDate, ZonedDateTime endDate, Device device) {
+    public Page<Status> findAll(Pageable pageable, ZonedDateTime startDate, ZonedDateTime endDate, String login) {
         log.debug("Request to get all Statuses");
         Page<Status> result;
         if (startDate != null && endDate != null) {
-            result = statusRepository.findByCreatedDateAfterAndCreatedDateBeforeAndCreatedBy(startDate, endDate, device.getLogin(), pageable);
+            result = statusRepository.findByCreatedDateAfterAndCreatedDateBeforeAndCreatedBy(startDate, endDate, login, pageable);
         } else {
-            result = statusRepository.findByCreatedBy(device.getLogin(), pageable);
+            result = statusRepository.findByCreatedBy(login, pageable);
         }
 
         return result;
@@ -113,11 +115,13 @@ public class StatusService {
     }
 
     @Cacheable(value = "status", key = "#createdBy")
+    @Transactional(readOnly = true)
     public Optional<Status> getLastStatusCreatedBy(String createdBy) {
         return statusRepository.findFirstByCreatedByOrderByCreatedDateDesc(createdBy);
     }
 
     @Cacheable(value = "statusQueue", key = "#createdBy")
+    @Transactional(readOnly = true)
     public Queue<Status> getLast10StatusesCreatedBy(String createdBy) {
         Set<Status> statuses = statusRepository.findTop10ByCreatedByOrderByCreatedDateDesc(createdBy);
         Queue<Status> statusQueue = new CircularFifoQueue<>(10);

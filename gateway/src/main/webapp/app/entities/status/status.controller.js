@@ -5,9 +5,9 @@
         .module(('securityalarmgatewayApp'))
         .controller('StatusController', StatusController);
 
-    StatusController.$inject = ['$scope', '$state', 'Status', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'devices'];
+    StatusController.$inject = ['$scope', '$state', 'Status', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'devices', 'Device'];
 
-    function StatusController ($scope, $state, Status, ParseLinks, AlertService, paginationConstants, pagingParams, devices) {
+    function StatusController ($scope, $state, Status, ParseLinks, AlertService, paginationConstants, pagingParams, devices, Device) {
         var vm = this;
 
         vm.loadPage = loadPage;
@@ -21,11 +21,11 @@
 
 
         vm.refresh = function loadAll (device) {
-            Status.query({
+            Device.statuses({
                 page: pagingParams.page - 1,
                 size: vm.itemsPerPage,
                 sort: sort(),
-                device: device.id
+                login: device.login
             }, onSuccess, onError);
             function sort() {
                 var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];

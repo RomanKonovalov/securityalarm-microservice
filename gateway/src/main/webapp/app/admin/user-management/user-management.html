@@ -6,9 +6,6 @@
           <button class="btn btn-primary" ui-sref="user-management.new">
               <span class="glyphicon glyphicon-flash"></span> <span data-translate="userManagement.home.createLabel">Create a new User</span>
           </button>
-          <button class="btn btn-primary" ui-sref="user-management.new({'user': null})">
-              <span class="glyphicon glyphicon-flash"></span> <span data-translate="userManagement.home.createDeviceLabel">Create a new Device</span>
-          </button>
       </div>
     </div>
     <div class="table-responsive">
@@ -48,12 +45,12 @@
                 <td>{{user.lastModifiedBy}}</td>
                 <td>{{user.lastModifiedDate | date:'dd/MM/yy HH:mm'}}</td>
                 <td>
-                    <button class="btn btn-primary" ui-sref="user-management.new({'user': user})">
-                        <span class="glyphicon glyphicon-flash"></span> <span>Add a new Device</span>
+                    <button class="btn btn-primary" ng-click="vm.addDevice(user)">
+                        <span class="glyphicon glyphicon-flash"></span> <span>Add Device</span>
                     </button>
                 </td>
                 <td>
-                    <button class="btn btn-primary" ui-sref="user-management.device-management({login:user.login,user: user})">
+                    <button class="btn btn-primary" ng-click="vm.showDevices(user)">
                         <span class="glyphicon glyphicon-pencil"></span> <span>Manage Devices</span>
                     </button>
                 </td>

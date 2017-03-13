@@ -5,26 +5,30 @@
         .module(('securityalarmgatewayApp'))
         .controller('DeviceManagementDialogController',DeviceManagementDialogController);
 
-    DeviceManagementDialogController.$inject = ['$uibModalInstance', '$stateParams', 'Devices', 'Device', 'TrackingTypes', 'NotificationTypes'];
+    DeviceManagementDialogController.$inject = ['$uibModalInstance', 'entity', 'Device'];
 
-    function DeviceManagementDialogController ($uibModalInstance, $stateParams, Devices, Device, TrackingTypes, NotificationTypes) {
+    function DeviceManagementDialogController ($uibModalInstance, entity, Device) {
         var vm = this;
 
-        vm.devices = Devices;
+        vm.device = entity;
 
         vm.clear = clear;
-
-        vm.trackingTypes = TrackingTypes;
-
-        vm.notificationTypes = NotificationTypes;
 
         function clear () {
             $uibModalInstance.dismiss('cancel');
         }
 
         function onSuccess (result) {
-            vm.devices = Device.query({login : $stateParams.login});
+            vm.device = result;
         }
+
+        vm.save = function (device) {
+            if (device.id) {
+                Device.update(device, onSuccess);
+            } else {
+                Device.save(device, onSuccess);
+            }
+        };
 
         vm.login = function (device) {
             Device.login({'login': device.name}, onSuccess);

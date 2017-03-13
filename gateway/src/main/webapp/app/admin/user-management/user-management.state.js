@@ -144,9 +144,38 @@
                 });
             }]
         })
-        .state('user-management.device-management', {
-            parent: 'user-management',
-            url: '/{login}/device-management',
+        .state('device-management.new', {
+            parent: 'device-management',
+            url: '/new',
+            data: {
+                authorities: ['ROLE_ADMIN']
+            },
+            params: {
+                user: undefined
+            },
+            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                $uibModal.open({
+                    templateUrl: 'app/admin/user-management/device-management-dialog.html',
+                    controller: 'DeviceManagementDialogController',
+                    controllerAs: 'vm',
+                    backdrop: 'static',
+                    size: 'lg',
+                    resolve: {
+                        entity: function () {
+                            return {
+                                id: null, phone: null, apn: null
+                            };
+                        }
+                    }
+                }).result.then(function() {
+                    $state.go('device-management', null, { reload: true });
+                }, function() {
+                    $state.go('device-management');
+                });
+            }]
+        })
+        .state('device-management.edit', {
+            url: '/{login}/edit',
             data: {
                 authorities: ['ROLE_ADMIN']
             },
@@ -158,14 +187,8 @@
                     backdrop: 'static',
                     size: 'lg',
                     resolve: {
-                        Devices: ['Device', function (Device) {
-                            return Device.query({login : $stateParams.login});
-                        }],
-                        TrackingTypes: ['Util', function (Util) {
-                            return Util.trackingTypes();
-                        }],
-                        NotificationTypes: ['Util', function (Util) {
-                            return Util.notificationTypes();
+                        entity: ['Device', function(Device) {
+                            return Device.get({login : $stateParams.login});
                         }]
                     }
                 }).result.then(function() {
@@ -175,6 +198,27 @@
                 });
             }]
         })
+        .state('device-management-detail', {
+                parent: 'device-management',
+                url: '/device/{login}',
+                data: {
+                    authorities: ['ROLE_ADMIN'],
+                    pageTitle: 'user-management.detail.title'
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/admin/user-management/device-management-detail.html',
+                        controller: 'DeviceManagementDetailController',
+                        controllerAs: 'vm'
+                    }
+                },
+                resolve: {
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('user-management');
+                        return $translate.refresh();
+                    }]
+                }
+            })
         .state('user-management-detail', {
             parent: 'user-management',
             url: '/user/{login}',

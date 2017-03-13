@@ -16,7 +16,7 @@ public class DeviceManagementDTO {
 
     private Long id;
 
-    private String name;
+    private String login;
 
     @Size(max = 50)
     private String description;

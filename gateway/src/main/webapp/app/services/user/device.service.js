@@ -15,7 +15,8 @@
             'delete':{ method:'DELETE'},
             'login': { method:'POST', params: {'login': '@login', action: 'login'} },
             'logout': { method:'POST', params: {'login': '@login', action: 'logout'} },
-            'config': { method:'POST', params: {'login': '@login', action: 'config'} }
+            'config': { method:'POST', params: {'login': '@login', action: 'config'} },
+            'statuses': { method:'GET', isArray: true, params: {'login': '@login', action: 'statuses'} }
         });
 
         return service;

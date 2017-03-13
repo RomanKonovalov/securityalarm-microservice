@@ -1,0 +1,77 @@
+<div>
+    <h2>
+        <span data-translate="userManagement.detail.title">Device</span> [<b>{{vm.device.login}}</b>]
+    </h2>
+    <dl class="row jh-entity-details">
+        <dt><span data-translate="userManagement.login">Login</span></dt>
+        <dd>
+            <span>{{vm.device.login}}</span>
+            <span class="label label-danger" ng-show="!vm.device.active"
+                  data-translate="userManagement.deactivated">Deactivated</span>
+            <span class="label label-success" ng-show="vm.device.active"
+                  data-translate="userManagement.activated">Activated</span>
+            <span class="label label-danger" ng-show="!device.configStatus || device.configStatus === 'NOT_CONFIGURED'">Not Configured</span>
+            <span class="label label-success" ng-show="device.configStatus === 'CONFIGURED'">Configured</span>
+            <span class="label label-warning" ng-show="device.configStatus === 'PENDING'">Pending</span>
+            <span class="label label-warning" ng-show="device.configStatus === 'CONFIG_SENT'">Config Sent</span>
+        </dd>
+        <dt><span data-translate="userManagement.description">Description</span></dt>
+        <dd>{{vm.device.description}}</dd>
+        <dt><span data-translate="userManagement.token">Token</span></dt>
+        <dd>{{vm.device.token}}</dd>
+        <dt><span data-translate="userManagement.pauseToken">Pause Token</span></dt>
+        <dd>{{vm.device.pauseToken}}</dd>
+        <dt><span data-translate="userManagement.secret">Secret</span></dt>
+        <dd>{{vm.device.secret}}</dd>
+        <dt><span data-translate="userManagement.phone">Device Phone</span></dt>
+        <dd>{{vm.device.phone}}</dd>
+        <dt><span data-translate="userManagement.apn">Apn</span></dt>
+        <dd>{{vm.device.apn}}</dd>
+    </dl>
+
+    <div class="panel" ng-class="vm.device.alarm.id ? 'panel-success' : ' panel-danger'">
+        <div class="panel-heading">
+            <h3 class="panel-title">Alarm</h3>
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Status</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static text-success" ng-show="vm.device.alarm.id">Activated since: {{device.alarm.createdDate | date:'dd/MM/yy HH:mm'}}</p>
+                    <p class="form-control-static text-danger" ng-hide="vm.device.alarm.id">Not Activated</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Tracking Type</label>
+                <div class="col-sm-4">
+                    <div class="checkbox" ng-repeat="trackingType in vm.trackingTypes">
+                        <label>
+                            <input type="checkbox" checklist-model="vm.device.alarm.trackingTypes"
+                                   checklist-value="trackingType" checklist-change="updateAlarm(vm.device.alarm)" disabled>
+                            {{trackingType}}
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Notification Type</label>
+                <div class="col-sm-4">
+                    <div class="checkbox" ng-repeat="notificationType in vm.notificationTypes">
+                        <label>
+                            <input type="checkbox" checklist-model="device.alarm.notificationTypes"
+                                   checklist-value="notificationType" checklist-change="updateAlarm(vm.device.alarm)" disabled>
+                            {{notificationType}}
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button type="submit"
+            ui-sref="device-management"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+</div>

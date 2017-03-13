@@ -4,16 +4,21 @@ import com.codahale.metrics.annotation.Timed;
 import com.romif.securityalarm.config.Constants;
 import com.romif.securityalarm.domain.ConfigStatus;
 import com.romif.securityalarm.domain.Device;
+import com.romif.securityalarm.domain.Status;
 import com.romif.securityalarm.domain.sms.DeliveryStatus;
 import com.romif.securityalarm.domain.sms.Receipt;
+import com.romif.securityalarm.repository.DeviceRepository;
 import com.romif.securityalarm.security.AuthoritiesConstants;
+import com.romif.securityalarm.security.SecurityUtils;
 import com.romif.securityalarm.service.DeviceService;
 import com.romif.securityalarm.service.SmsTxtlocalService;
+import com.romif.securityalarm.service.StatusService;
 import com.romif.securityalarm.service.dto.DeviceDTO;
 import com.romif.securityalarm.service.dto.DeviceManagementDTO;
 import com.romif.securityalarm.web.rest.util.HeaderUtil;
 import com.romif.securityalarm.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +30,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,8 +38,11 @@ import java.beans.PropertyEditorSupport;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -49,7 +58,13 @@ public class DeviceResource {
     private DeviceService deviceService;
 
     @Autowired
+    private DeviceRepository deviceRepository;
+
+    @Autowired
     private SmsTxtlocalService smsService;
+
+    @Autowired
+    private StatusService statusService;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -116,6 +131,27 @@ public class DeviceResource {
                 .body(null);*/
     }
 
+    @GetMapping("/devices/{login:" + Constants.LOGIN_REGEX + "}/statuses")
+    @Secured("ROLE_USER")
+    @Timed
+    @Transactional
+    public ResponseEntity<List<Status>> getAllStatuses(@ApiParam Pageable pageable,
+                                                       @RequestParam(required = false) ZonedDateTime startDate,
+                                                       @RequestParam(required = false) ZonedDateTime endDate,
+                                                       @PathVariable String login)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Statuses for Device {}", login);
+
+        Optional<Device> device = deviceRepository.findOneByLogin(login);
+        if (!device.isPresent() || device.get().getUser() == null || !SecurityUtils.getCurrentUserLogin().equals(device.get().getUser().getLogin())) {
+            HttpHeaders headers = HeaderUtil.createAlert("A device is not found with login " + login, login);
+            return new ResponseEntity<>(Collections.emptyList(), headers, HttpStatus.NOT_FOUND);
+        }
+        Page<Status> page = statusService.findAll(pageable, startDate, endDate, login);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/statuses");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
     @DeleteMapping("/devices/{login:" + Constants.LOGIN_REGEX + "}")
     @Timed
     @Secured(AuthoritiesConstants.ADMIN)
@@ -128,7 +164,7 @@ public class DeviceResource {
     @GetMapping("/devices")
     @Timed
     @Secured(AuthoritiesConstants.ADMIN)
-    public ResponseEntity<List<DeviceDTO>> getAllDevices(Pageable pageable, @RequestParam boolean free) throws URISyntaxException {
+    public ResponseEntity<List<DeviceDTO>> getAllDevices(Pageable pageable, @RequestParam(required = false) boolean free) throws URISyntaxException {
 
         Page<DeviceDTO> page = free ? deviceService.getAllFreeDevices(pageable) : deviceService.getAllDevices(pageable);
 
@@ -155,7 +191,9 @@ public class DeviceResource {
     public ResponseEntity<?> updateDevice(@RequestBody DeviceDTO device) {
         log.debug("REST request to update Device : {}", device);
 
-        if (deviceService.updateDevice(device)) {
+        String login = SecurityUtils.getCurrentUserLogin();
+
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) ? deviceService.updateDevice(device) : deviceService.updateDevice(device, login)) {
             return ResponseEntity.ok()
                 .headers(HeaderUtil.createAlert("A device is updated with name " + device.getDescription(), device.getDescription()))
                 .build();

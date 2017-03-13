@@ -11,13 +11,11 @@ public interface DeviceMapper {
 
     DeviceDTO deviceManagementDTOToDeviceDTO(DeviceManagementDTO deviceManagementDTO);
 
-    @Mapping(target = "name", source = "login")
     @Mapping(target = "token", source = "deviceCredentials.token")
     @Mapping(target = "pauseToken", source = "deviceCredentials.pauseToken")
     @Mapping(target = "secret", source = "deviceCredentials.secret")
     DeviceManagementDTO deviceToDeviceManagementDTO(Device device);
 
-    @Mapping(target = "name", source = "login")
     @Mapping(target = "userLogin", source = "user.login")
     DeviceDTO deviceToDeviceDTO(Device device);
 

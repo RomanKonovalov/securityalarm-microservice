@@ -5,8 +5,11 @@ import com.romif.securityalarm.config.Constants;
 import com.romif.securityalarm.domain.ConfigStatus;
 import com.romif.securityalarm.domain.Device;
 import com.romif.securityalarm.domain.DeviceCredentials;
+import com.romif.securityalarm.domain.User;
 import com.romif.securityalarm.repository.DeviceCredentialsRepository;
 import com.romif.securityalarm.repository.DeviceRepository;
+import com.romif.securityalarm.repository.UserRepository;
+import com.romif.securityalarm.security.AuthoritiesConstants;
 import com.romif.securityalarm.security.jwt.TokenProvider;
 import com.romif.securityalarm.service.dto.DeviceConfigDTO;
 import com.romif.securityalarm.service.dto.DeviceDTO;
@@ -20,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -49,6 +53,9 @@ public class DeviceService {
     private DeviceRepository deviceRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private DeviceMapper deviceMapper;
 
     @Autowired
@@ -63,6 +70,7 @@ public class DeviceService {
             .map(device -> deviceMapper.deviceToDeviceManagementDTO(device));
     }
 
+    @Transactional
     public List<DeviceDTO> getAllDevicesForUser(String login) {
 
         return deviceRepository.findAllByUserLogin(login).stream()
@@ -76,6 +84,24 @@ public class DeviceService {
         return deviceRepository.findAllByUserLoginAndActiveTrue(login).stream()
             .map(device -> deviceMapper.deviceToDeviceDTO(device))
             .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public boolean addDeviceToUser(String login, DeviceDTO deviceDTO) {
+
+        return deviceRepository.findOneById(deviceDTO.getId())
+            .map(device -> {
+                Optional<User> user = userRepository.findOneByLogin(login);
+                if (user.isPresent()) {
+                    device.setUser(user.get());
+                    deviceRepository.save(device);
+                    return true;
+                } else {
+                    return false;
+                }
+            })
+            .orElse(false);
+
     }
 
     @Transactional
@@ -115,11 +141,22 @@ public class DeviceService {
     }
 
     @Transactional
+    public boolean updateDevice(DeviceDTO deviceDTO, String login) {
+        return deviceRepository.findOneByIdAndUserLogin(deviceDTO.getId(), login).map(device -> {
+            device.setPhone(deviceDTO.getPhone());
+            device.setApn(deviceDTO.getApn());
+            device.setDescription(deviceDTO.getDescription());
+            deviceRepository.save(device);
+            return true;
+        }).orElse(false);
+    }
+
+    @Transactional
+    @Secured(AuthoritiesConstants.ADMIN)
     public boolean updateDevice(DeviceDTO deviceDTO) {
         return deviceRepository.findOneById(deviceDTO.getId()).map(device -> {
             device.setPhone(deviceDTO.getPhone());
             device.setApn(deviceDTO.getApn());
-            device.setDescription(deviceDTO.getDescription());
             deviceRepository.save(device);
             return true;
         }).orElse(false);

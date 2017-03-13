@@ -5,9 +5,9 @@
         .module('securityalarmgatewayApp')
         .controller('UserManagementController', UserManagementController);
 
-    UserManagementController.$inject = ['Principal', 'User', 'ParseLinks', 'AlertService', '$state', 'pagingParams', 'paginationConstants', 'JhiLanguageService'];
+    UserManagementController.$inject = ['Principal', 'User', 'ParseLinks', 'AlertService', '$state', 'pagingParams', 'paginationConstants', 'JhiLanguageService', '$uibModal'];
 
-    function UserManagementController(Principal, User, ParseLinks, AlertService, $state, pagingParams, paginationConstants, JhiLanguageService) {
+    function UserManagementController(Principal, User, ParseLinks, AlertService, $state, pagingParams, paginationConstants, JhiLanguageService, $uibModal) {
         var vm = this;
 
         vm.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
@@ -89,6 +89,48 @@
                 page: vm.page,
                 sort: vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc'),
                 search: vm.currentSearch
+            });
+        }
+
+        vm.addDevice = function (user) {
+            $uibModal.open({
+                templateUrl: 'app/admin/user-management/add-device.html',
+                controller: 'AddDeviceController',
+                controllerAs: 'vm',
+                size: 'md',
+                resolve: {
+                    freeDevices: ['Device', function(Device) {
+                        return Device.query({free : true});
+                    }],
+                    user: function () {
+                        return user;
+                    }
+                }
+            }).result.then(function() {
+                $state.go('user-management', null, { reload: true });
+            }, function() {
+                $state.go('user-management');
+            });
+        }
+
+        vm.showDevices = function (user) {
+            $uibModal.open({
+                templateUrl: 'app/admin/user-management/device-list.html',
+                controller: 'DeviceListController',
+                controllerAs: 'vm',
+                size: 'md',
+                resolve: {
+                    devices: ['User', function(User) {
+                        return User.devices({login: user.login});
+                    }],
+                    user: function () {
+                        return user;
+                    }
+                }
+            }).result.then(function() {
+                $state.go('user-management', null, { reload: true });
+            }, function() {
+                $state.go('user-management');
             });
         }
     }

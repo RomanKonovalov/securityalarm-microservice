@@ -38,7 +38,6 @@ public class Device extends GenericUser {
     @Column(name = "pause_token_hash",length = 60)
     private String pauseToken;
 
-    @NotNull
     @Column(name = "apn", length = 50)
     private String apn;
 
