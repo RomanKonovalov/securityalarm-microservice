@@ -18,7 +18,8 @@ spring:
     cloud:
         config:
             fail-fast: true
-            uri: http://admin:${jhipster.registry.password}@localhost:8761/config
+            #uri: http://admin:${jhipster.registry.password}@localhost:8761/config
+            uri: http://admin:${jhipster.registry.password}@registry-securityalarm.rhcloud.com/config
             # name of the config server's property source (file.yml) that we want to use
             name: securityalarm
             profile: dev # profile(s) of the property source
