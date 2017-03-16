@@ -1,9 +1,0 @@
-#!/bin/bash
-
-mvn -Pprod clean install -DskipTests
-
-#ssh -i "~/.ssh/home.pem" ec2-user@ec2-52-38-57-246.us-west-2.compute.amazonaws.com
-
-#ssh root@104.238.176.254 '/etc/init.d/securityalarm stop'
-scp -i "~/.ssh/home.pem" target/*.war ec2-user@ec2-52-38-57-246.us-west-2.compute.amazonaws.com:~/app/securityalarm.war
-#ssh root@104.238.176.254 '/etc/init.d/securityalarm start'

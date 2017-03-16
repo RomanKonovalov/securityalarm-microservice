@@ -79,7 +79,7 @@ public class TokenProvider {
                 .setSubject(login)
                 .claim(AUTHORITIES_KEY, authorities)
                 .signWith(SignatureAlgorithm.HS256, secretKey)
-                .setExpiration(validity)
+                .setExpiration(null)
                 .compact();
     }
 
